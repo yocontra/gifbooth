@@ -1,0 +1,57 @@
+@require 'nib'
+@require 'jeet'
+
+global-reset()
+
+html, body
+  width: 100%
+  height: 100%
+
+body
+  font-family: 'Open Sans', sans-serif
+  font-weight: 400
+  font-size: 14px/1.5
+
+  color: #333
+  background-color: #fff
+
+  -webkit-text-size-adjust: 100%
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  text-rendering: optimizeLegibility
+  font-feature-settings: 'liga', 'kern'
+
+  color: #fff
+  text-align: center
+  background-size: cover
+  background-position: 50% 50%
+  background-image: url('../img/bg.png')
+
+.logo
+  margin: 0 auto
+  padding: 20px
+  width: 140px
+  max-width: 100%
+
+.remote-vid, .video-preview
+  border-radius: 3px
+
+  @media screen and (min-width: 700px)
+    height: 240px
+    width: 320px
+
+  @media screen and (max-width: 700px)
+    height: 160px
+    width: 213px
+
+  @media screen and (max-width: 400px)
+    height: 120px
+    width: 160px
+
+.video-preview
+  position: fixed
+  left: 10px
+  bottom: 10px
+
+.remote-vid
+  margin: 10px

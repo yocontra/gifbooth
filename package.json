@@ -1,0 +1,36 @@
+{
+  "name": "site",
+  "devDependencies": {
+    "autoprefixer-stylus": "^0.1.0",
+    "gulp": "^3.8.1",
+    "gulp-cached": "^1.0.0",
+    "gulp-gh-pages": "^0.3.3",
+    "gulp-if": "^1.2.1",
+    "gulp-livereload": "^2.1.0",
+    "gulp-remember": "^0.2.0",
+    "gulp-stylus": "^1.0.2",
+    "gulp-uglify": "^0.3.1",
+    "jeet": "^5.3.0",
+    "nib": "^1.0.3",
+    "vinyl-buffer": "0.0.0",
+    "vinyl-source-stream": "^0.1.1",
+    "gulp-csso": "^0.2.9",
+    "browserify": "^4.2.0"
+  },
+  "dependencies": {
+    "async": "^0.9.0",
+    "body-parser": "^1.4.3",
+    "envify": "^1.2.1",
+    "express": "^4.6.1",
+    "getusermedia": "^1.0.0",
+    "gulp-sourcemaps": "^1.1.0",
+    "lodash": "^2.4.1",
+    "method-override": "^2.1.1",
+    "raf": "^2.0.1",
+    "react": "^0.10.0",
+    "request": "^2.37.0",
+    "screenfull": "^1.2.1",
+    "socket.io": "^1.0.6",
+    "whammy": "0.0.1"
+  }
+}
