@@ -4,6 +4,12 @@ var record = require('./record');
 var BlobSource = {
   supported: !!URL,
 
+  getInitialState: function() {
+    return {
+      recording: false
+    };
+  },
+
   getBlob: function (stream) {
     if (!this.blob) {
       this.blob = URL.createObjectURL(stream);
@@ -19,7 +25,7 @@ var BlobSource = {
   }
 };
 
-var upload = function(blob, cb) {
+var upload = function(blob) {
   var req = new XMLHttpRequest();
   req.open('POST', '/upload', true);
   req.send(blob);
@@ -33,17 +39,25 @@ var CaptureMedia = React.createClass({
   },
 
   record: function(cb) {
+    this.setState({recording: true});
     record(this.refs.videoElement.getDOMNode(), 3000, function(err, blob){
-      upload(blob);
-    });
+      if (blob) {
+        upload(blob);
+      }
+      this.setState({recording: false});
+    }.bind(this));
   },
 
   render: function() {
+    var className = 'video-preview';
+    if (this.state.recording) {
+      className += ' recording';
+    }
     var props = {
       ref: 'videoElement',
       muted: true,
       autoPlay: true,
-      className: 'video-preview',
+      className: className,
       style: this.props.style,
       onClick: this.record
     };

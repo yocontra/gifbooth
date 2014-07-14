@@ -15,26 +15,16 @@ var videoConstraints = {
   ]
 };
 
-function base64toBlob(base64Data, contentType) {
-  contentType = contentType || '';
-  var sliceSize = 1024;
-  var byteCharacters = atob(base64Data);
-  var bytesLength = byteCharacters.length;
-  var slicesCount = Math.ceil(bytesLength / sliceSize);
-  var byteArrays = new Array(slicesCount);
-
-  for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
-    var begin = sliceIndex * sliceSize;
-    var end = Math.min(begin + sliceSize, bytesLength);
-
-    var bytes = new Array(end - begin);
-    for (var offset = begin, i = 0 ; offset < end; ++i, ++offset) {
-      bytes[i] = byteCharacters[offset].charCodeAt(0);
-    }
-    byteArrays[sliceIndex] = new Uint8Array(bytes);
+var base64ToBlob = function(base64, contentType) {
+  var binary = atob(base64);
+  var len = binary.length;
+  var buffer = new ArrayBuffer(len);
+  var view = new Uint8Array(buffer);
+  for (var i = 0; i < len; i++) {
+    view[i] = binary.charCodeAt(i);
   }
-  return new Blob(byteArrays, { type: contentType });
-}
+  return new Blob([view], {type: contentType});
+};
 
 var Application = React.createClass({
   displayName: 'Application',
@@ -54,8 +44,7 @@ var Application = React.createClass({
     gum({video: true, audio: false}, this.handleGUM);
 
     this.props.socket.on('video', function(msg){
-      console.log(msg);
-      var blegh = base64toBlob(msg.data, 'video/webm');
+      var blegh = base64ToBlob(msg.data, 'video/webm');
       var url = URL.createObjectURL(blegh);
       this.addVideo({
         id: msg.id,
