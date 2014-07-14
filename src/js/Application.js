@@ -54,19 +54,22 @@ var Application = React.createClass({
     gum({video: true, audio: false}, this.handleGUM);
 
     this.props.socket.on('video', function(msg){
-      //console.log(msg);
-      var blegh = base64toBlob(msg, 'video/webm');
+      console.log(msg);
+      var blegh = base64toBlob(msg.data, 'video/webm');
       var url = URL.createObjectURL(blegh);
-      this.addVideo(url);
+      this.addVideo({
+        id: msg.id,
+        url: url
+      });
     }.bind(this));
   },
 
-  addVideo: function(url) {
+  addVideo: function(vid) {
     var vids = this.state.videos;
     if (this.state.videos.length >= 20) {
-      URL.revokeObjectURL(vids.pop());
+      URL.revokeObjectURL(vids.pop().url);
     }
-    vids.unshift(url);
+    vids.unshift(vid);
     this.setState({videos: vids});
   },
 
@@ -86,12 +89,16 @@ var Application = React.createClass({
     var children = [];
 
     if (this.state.stream) {
-      children.push(CaptureMedia({stream: this.state.stream}));
+      children.push(CaptureMedia({
+        key: 'getMedia',
+        stream: this.state.stream
+      }));
     }
 
-    this.state.videos.forEach(function(url){
+    this.state.videos.forEach(function(vid){
       children.push(React.DOM.video({
-        src: url,
+        key: vid.id,
+        src: vid.url,
         loop: true,
         controls: false,
         muted: true,

@@ -1,6 +1,7 @@
 var http = require('http');
 var express = require('express');
 var sio = require('socket.io');
+var uuid = require('uuid');
 
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
@@ -18,13 +19,13 @@ var vids = [];
 var maxVideos = 20;
 
 app.post('/upload', function(req, res, next){
-  var buf = [];
+  var payload = [];
   req.on('data', function(chunk){
-    buf.push(chunk);
+    payload.push(chunk);
   });
   req.on('end', function() {
-    var vid = Buffer.concat(buf);
-    addVideo(vid);
+    var buf = Buffer.concat(payload);
+    addVideo(buf);
     res.status(200);
     res.end();
   });
@@ -36,13 +37,16 @@ io.on('connection', function(socket){
   });
 });
 
-function addVideo(vid) {
-  vid = vid.toString('base64');
+function addVideo(buf) {
+  var vid = {
+    id: uuid.v4(),
+    data: buf.toString('base64')
+  };
+
   if (vids.length >= 20) {
     vids.pop();
   }
   vids.unshift(vid);
-  //console.log(vid, vid.length);
   io.emit('video', vid);
 }
 module.exports = server;
