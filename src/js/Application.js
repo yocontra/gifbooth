@@ -15,17 +15,6 @@ var videoConstraints = {
   ]
 };
 
-var base64ToBlob = function(base64, contentType) {
-  var binary = atob(base64);
-  var len = binary.length;
-  var buffer = new ArrayBuffer(len);
-  var view = new Uint8Array(buffer);
-  for (var i = 0; i < len; i++) {
-    view[i] = binary.charCodeAt(i);
-  }
-  return new Blob([view], {type: contentType});
-};
-
 var Application = React.createClass({
   displayName: 'Application',
   propTypes: {
@@ -42,23 +31,18 @@ var Application = React.createClass({
 
   componentWillMount: function() {
     gum({video: true, audio: false}, this.handleGUM);
-
-    this.props.socket.on('video', function(msg){
-      var blegh = base64ToBlob(msg.data, 'video/webm');
-      var url = URL.createObjectURL(blegh);
-      this.addVideo({
-        id: msg.id,
-        url: url
-      });
-    }.bind(this));
+    this.props.socket.on('video', this.addVideo);
   },
 
-  addVideo: function(vid) {
+  addVideo: function(id) {
     var vids = this.state.videos;
     if (this.state.videos.length >= 20) {
-      URL.revokeObjectURL(vids.pop().url);
+      vids.pop();
     }
-    vids.unshift(vid);
+    vids.unshift({
+      id: id,
+      url: '/video/'+id+'.webm'
+    });
     this.setState({videos: vids});
   },
 
@@ -72,9 +56,6 @@ var Application = React.createClass({
   },
 
   render: function() {
-    if (!this.state.stream && !this.state.declined) {
-      return React.DOM.div({className: 'wall'});
-    }
     var children = [];
 
     if (this.state.stream) {

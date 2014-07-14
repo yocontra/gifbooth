@@ -4,7 +4,7 @@ var raf = require('raf');
 module.exports = function(el, time, cb) {
   var w = el.getBoundingClientRect().width;
   var h = el.getBoundingClientRect().height;
-  var encoder = new whammy.Video(60, 1);
+  var encoder = new whammy.Video(60, 0.5);
   //delete encoder.duration; // hack
 
   var can = document.createElement('canvas');
