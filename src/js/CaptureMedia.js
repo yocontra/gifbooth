@@ -39,6 +39,10 @@ var CaptureMedia = React.createClass({
   },
 
   record: function(cb) {
+    if (this.state.recording) {
+      return;
+    }
+
     this.setState({recording: true});
     record(this.refs.videoElement.getDOMNode(), 3000, function(err, blob){
       if (blob) {
