@@ -43,7 +43,7 @@ app.post('/upload', simpleMiddleware, function(req, res, next){
 
 io.on('connection', function(socket){
   fs.readdir(vidPath, function(err, files){
-    files.sort().forEach(function(file){
+    files.sort().slice(0, maxVideos).forEach(function(file){
       socket.emit('video', path.basename(file, path.extname(file)));
     });
   });
