@@ -37,6 +37,9 @@ body
   margin-bottom: 240px
   
 .remote-vid, .video-preview
+  animation: fadein 0.5s
+  transition: all 0.5s ease-in-out
+
   border-radius: 3px
 
   @media screen and (min-width: 700px)
@@ -52,7 +55,6 @@ body
     width: 160px
 
 .video-preview
-  transition: all 0.5s ease-in-out
   position: fixed
   left: 10px
   bottom: 10px
@@ -62,3 +64,8 @@ body
 
 .remote-vid
   margin: 10px
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}

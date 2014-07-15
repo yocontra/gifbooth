@@ -14,7 +14,7 @@ var app = express();
 var server = http.Server(app);
 var io = sio(server);
 
-var simpleMiddleware = rate.middleware({interval: 6, limit: 2});
+var simpleMiddleware = rate.middleware({interval: 6, limit: 3});
 
 app.use(express.static(path.join(__dirname, '../dist')));
 app.use(bodyParser());
