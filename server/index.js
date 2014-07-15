@@ -18,12 +18,18 @@ var io = sio(server);
 
 var keys = [];//['de-la-party'];
 var banned = ['67.212.112.186'];
-var maxVideos = 2;
+var maxVideos = 20;
 var counter = 0;
 
 var videoList = [];
 updateVideoList(function(err){
   if (err) console.error('Error updating video list', err);
+  if (videoList.length >= 1) {
+    counter = parseInt(videoList[0], 10);
+  } else {
+    counter = 0;
+  }
+  console.log('Counter is', counter);
 });
 
 var rateLimit = rate.middleware({interval: 6, limit: 3});

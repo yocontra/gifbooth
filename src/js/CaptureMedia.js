@@ -1,30 +1,6 @@
 var React = require('react');
 var record = require('./record');
 
-var BlobSource = {
-  supported: !!URL,
-
-  getInitialState: function() {
-    return {
-      recording: false
-    };
-  },
-
-  getBlob: function (stream) {
-    if (!this.blob) {
-      this.blob = URL.createObjectURL(stream);
-    }
-    return this.blob;
-  },
-
-  componentWillUnmount: function () {
-    if (this.blob) {
-      URL.revokeObjectURL(this.blob);
-      delete this.blob;
-    }
-  }
-};
-
 var upload = function(blob) {
   var req = new XMLHttpRequest();
   req.open('POST', '/upload', true);
@@ -33,9 +9,14 @@ var upload = function(blob) {
 
 var CaptureMedia = React.createClass({
   displayName: 'CaptureMedia',
-  mixins: [BlobSource],
   propTypes: {
-    stream: React.PropTypes.object.isRequired
+    src: React.PropTypes.string.isRequired
+  },
+
+  getInitialState: function() {
+    return {
+      recording: false
+    };
   },
 
   record: function(cb) {
@@ -59,23 +40,13 @@ var CaptureMedia = React.createClass({
     }
     var props = {
       ref: 'videoElement',
+      src: this.props.src,
       muted: true,
       autoPlay: true,
       className: className,
       style: this.props.style,
       onClick: this.record
     };
-
-    // new browsers
-    if (BlobSource.supported && this.props.stream) {
-      props.src = this.getBlob(this.props.stream);
-    }
-    // old browsers
-    if (!BlobSource.supported && this.props.stream) {
-      props.srcObject = this.props.stream;
-      props.webkitSrcObject = this.props.stream;
-      props.mozSrcObject = this.props.stream;
-    }
 
     var videoElement = React.DOM.video(props);
 

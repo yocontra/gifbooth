@@ -24,7 +24,6 @@ var Application = React.createClass({
   getInitialState: function() {
     return {
       stream: null,
-      declined: false,
       videos: []
     };
   },
@@ -53,11 +52,12 @@ var Application = React.createClass({
 
   handleGUM: function(err, stream){
     if (stream) {
-      this.setState({stream: stream});
+      this.setState({
+        stream: URL.createObjectURL(stream)
+      });
       return;
     }
     console.error(err);
-    this.setState({declined: true});
   },
 
   render: function() {
@@ -65,8 +65,9 @@ var Application = React.createClass({
 
     if (this.state.stream) {
       children.push(CaptureMedia({
+        ref: 'selfie',
         key: 'getMedia',
-        stream: this.state.stream
+        src: this.state.stream
       }));
     }
 
