@@ -1,7 +1,12 @@
 var React = require('react');
 var Application = require('./Application');
-var socket = io.connect();
 
+if (!window.chrome) {
+  alert('Sorry! Only Google Chrome supports the features required to run this experiment.');
+  return;
+}
+
+var socket = io.connect();
 var mount = document.getElementById('application');
 var app = Application({socket: socket});
 React.renderComponent(app, mount);
