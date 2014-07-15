@@ -61,12 +61,20 @@ body
   bottom: 10px
 
 .recording
-  border-radius: 100%
+  border-radius: 10px
+  animation: spin 3s
 
 .remote-vid
   margin: 10px
 
-@keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
+@keyframes fadein
+    from
+      opacity: 0
+    to
+      opacity: 1
+
+@keyframes spin
+    from
+      transform:rotate(0deg)
+    to
+      transform:rotate(360deg)

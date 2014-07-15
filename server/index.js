@@ -32,11 +32,6 @@ del.sync(vidPath+'/*');
 app.post('/upload', simpleMiddleware, function(req, res, next){
   var id = ++counter;
 
-  /*
-  if (id === maxVideos) {
-    counter = 0;
-  }
-  */
   var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   var outPath = path.join(vidPath, id+'.webm');
   console.log(outPath, 'from', ip);
@@ -45,13 +40,6 @@ app.post('/upload', simpleMiddleware, function(req, res, next){
     res.status(200);
     res.end();
   });
-});
-
-app.get('/link', function(req, res, next){
-  io.emit('link', req.query.url);
-  console.log(req.query.url, 'opened by everyone');
-  res.status(200);
-  res.end();
 });
 
 io.on('connection', function(socket){

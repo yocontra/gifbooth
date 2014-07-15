@@ -32,13 +32,6 @@ var Application = React.createClass({
   componentWillMount: function() {
     gum({video: true, audio: false}, this.handleGUM);
     this.props.socket.on('video', this.addVideo);
-    this.props.socket.on('link', this.openLink);
-    //this.props.socket.on('clear-link', this.clearLink);
-  },
-
-  openLink: function(url) {
-    console.log('opening', url);
-    window.open(url, '_blank');
   },
 
   addVideo: function(id) {
