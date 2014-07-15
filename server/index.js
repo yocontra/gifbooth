@@ -16,7 +16,7 @@ var app = express();
 var server = http.Server(app);
 var io = sio(server);
 
-var banned = [];
+var banned = ['67.212.112.186'];
 var maxVideos = 10;
 var counter = 0;
 
