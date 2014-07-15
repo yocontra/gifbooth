@@ -21,6 +21,11 @@ var banned = ['67.212.112.186'];
 var maxVideos = 2;
 var counter = 0;
 
+var videoList = [];
+updateVideoList(function(err){
+  if (err) console.error('Error updating video list', err);
+});
+
 var rateLimit = rate.middleware({interval: 6, limit: 3});
 
 app.use(ipfilter(banned, {log: false}));
@@ -33,7 +38,7 @@ io.on('connection', sendVideoList);
 
 function empty(req, res, next){
   io.emit('clear');
-  del(vidPath+'/*', function(err){
+  clearExcept([], function(err){
     if (err) {
       return next(err);
     }
@@ -42,23 +47,32 @@ function empty(req, res, next){
   });
 }
 
+function sendVideoList(socket){
+  videoList.forEach(socket.emit.bind(socket, 'video'));
+}
+
 function uploadVideo(req, res, next){
   var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   var id = ++counter;
   console.log('Clip', id, 'from', ip);
 
   var outPath = path.join(vidPath, id+'.webm');
+
   var writeStream = req.pipe(fs.createWriteStream(outPath));
   writeStream.once('error', function(err){
     del(outPath, function(){
-      res.status(500);
-      res.end(err.message);
+      next(err);
     });
   });
   writeStream.once('finish', function(){
     io.emit('video', id);
-    res.status(200);
-    res.end();
+    updateVideoList(function(err){
+      if (err) {
+        return next(err);
+      }
+      res.status(200);
+      res.end();
+    });
   });
 }
 
@@ -71,9 +85,12 @@ function checkAPIKey(req, res, next){
   next();
 }
 
-function sendVideoList(socket){
+function updateVideoList(cb){
   fs.readdir(vidPath, function(err, files){
-    var filesToSend = files
+    if (err) {
+      return cb(err);
+    }
+    videoList = files
       .map(function(file){
         return path.basename(file, path.extname(file));
       })
@@ -83,15 +100,10 @@ function sendVideoList(socket){
       .slice(0, maxVideos)
       .reverse();
     
-    filesToSend.forEach(socket.emit.bind(socket, 'video'));
-
     if (files.length > maxVideos) {
-      clearExcept(filesToSend, function(err){
-        if (err) {
-          console.error('Error clearing cache', err);
-        }
-      });
+      return clearExcept(videoList, cb);
     }
+    cb();
   });
 }
 
@@ -102,4 +114,5 @@ function clearExcept(files, cb){
   }));
   del(globs, cb);
 }
+
 module.exports = server;
