@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var path = require('path');
 var fs = require('fs');
+var del = require('del');
 
 var vidPath = path.join(__dirname, '../dist/video');
 var app = express();
@@ -20,10 +21,18 @@ app.use(express.static(path.join(__dirname, '../dist')));
 app.use(bodyParser());
 app.use(methodOverride());
 
-var maxVideos = 20;
+var maxVideos = 10;
+var counter = 0;
+
+del.sync(vidPath+'/*');
 
 app.post('/upload', simpleMiddleware, function(req, res, next){
-  var id = uuid.v4();
+  var id = ++counter;
+  /*
+  if (id === maxVideos) {
+    counter = 0;
+  }
+  */
   var outPath = path.join(vidPath, id+'.webm');
   req.pipe(fs.createWriteStream(outPath)).once('finish', function(){
     io.emit('video', id);
@@ -34,7 +43,7 @@ app.post('/upload', simpleMiddleware, function(req, res, next){
 
 io.on('connection', function(socket){
   fs.readdir(vidPath, function(err, files){
-    files.forEach(function(file){
+    files.sort().forEach(function(file){
       socket.emit('video', path.basename(file, path.extname(file)));
     });
   });
