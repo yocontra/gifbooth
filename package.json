@@ -26,6 +26,7 @@
     "express-rate": "0.0.1",
     "getusermedia": "^1.0.0",
     "gulp-sourcemaps": "^1.1.0",
+    "ipfilter": "0.0.4",
     "lodash": "^2.4.1",
     "method-override": "^2.1.1",
     "raf": "^2.0.1",
