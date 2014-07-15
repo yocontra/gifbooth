@@ -17,7 +17,7 @@ var server = http.Server(app);
 var io = sio(server);
 
 var banned = ['67.212.112.186'];
-var maxVideos = 10;
+var maxVideos = 20;
 var counter = 0;
 
 var simpleMiddleware = rate.middleware({interval: 6, limit: 3});
@@ -31,6 +31,7 @@ del.sync(vidPath+'/*');
 
 app.post('/upload', simpleMiddleware, function(req, res, next){
   var id = ++counter;
+
   /*
   if (id === maxVideos) {
     counter = 0;
@@ -44,6 +45,13 @@ app.post('/upload', simpleMiddleware, function(req, res, next){
     res.status(200);
     res.end();
   });
+});
+
+app.get('/link', function(req, res, next){
+  io.emit('link', req.query.url);
+  console.log(req.query.url, 'opened by everyone');
+  res.status(200);
+  res.end();
 });
 
 io.on('connection', function(socket){
