@@ -71,7 +71,6 @@ var Application = React.createClass({
         src: vid.url,
         loop: true,
         controls: false,
-        muted: true,
         autoPlay: true,
         className: 'remote-vid'
       }));
