@@ -36,7 +36,7 @@ var Application = React.createClass({
 
   addVideo: function(id) {
     var vids = this.state.videos;
-    if (this.state.videos.length >= 10) {
+    if (this.state.videos.length >= 20) {
       vids.pop();
     }
     vids.unshift({
