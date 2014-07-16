@@ -43,6 +43,7 @@ app.get('/clean', rateLimit, checkAPIKey, empty);
 io.on('connection', sendVideoList);
 
 function empty(req, res, next){
+  videoList = [];
   io.emit('clear');
   clearExcept([], function(err){
     if (err) {
