@@ -19,6 +19,14 @@ var CaptureMedia = React.createClass({
     };
   },
 
+  componentWillMount: function() {
+    document.addEventListener('keypress', function(e){
+      if (e.keyCode === 13) {
+        this.record();
+      }
+    }.bind(this));
+  },
+
   record: function(cb) {
     if (this.state.recording) {
       return;

@@ -83,7 +83,9 @@ var Application = React.createClass({
       }));
     });
 
-    var container = React.DOM.div({className: 'wall'}, children);
+    var container = React.DOM.div({
+      className: 'wall'
+    }, children);
 
     return container;
   }
