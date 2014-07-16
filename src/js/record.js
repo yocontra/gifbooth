@@ -2,12 +2,16 @@ var whammy = require('whammy');
 var raf = require('raf');
 
 module.exports = function(el, time, cb) {
-  var w = el.getBoundingClientRect().width;
-  var h = el.getBoundingClientRect().height;
+  var w = el.videoWidth;
+  var h = el.videoHeight;
   var encoder = new whammy.Video(60, 0.5);
   //delete encoder.duration; // hack
 
   var can = document.createElement('canvas');
+  var vid = document.createElement('video');
+  vid.src = el.src;
+  vid.play();
+
   var ctx = can.getContext('2d');
   can.width = w;
   can.height = h;
@@ -25,7 +29,7 @@ module.exports = function(el, time, cb) {
     if (since >= time) {
       return done();
     }
-    ctx.drawImage(el, 0, 0, w, h);
+    ctx.drawImage(vid, 0, 0, w, h);
     encoder.add(ctx);
     last = Date.now();
     raf(grab);
@@ -36,5 +40,5 @@ module.exports = function(el, time, cb) {
     cb(null, output);
   };
 
-  grab();
+  setTimeout(grab, 100);
 };
