@@ -25,7 +25,7 @@ var videoList = [];
 updateVideoList(function(err){
   if (err) console.error('Error updating video list', err);
   if (videoList.length >= 1) {
-    counter = parseInt(videoList[0], 10);
+    counter = parseInt(videoList[videoList.length-1], 10);
   } else {
     counter = 0;
   }
@@ -44,6 +44,7 @@ io.on('connection', sendVideoList);
 
 function empty(req, res, next){
   videoList = [];
+  counter = 0;
   io.emit('clear');
   clearExcept([], function(err){
     if (err) {
@@ -66,17 +67,20 @@ function uploadVideo(req, res, next){
   var outPath = path.join(vidPath, id+'.webm');
 
   var writeStream = req.pipe(fs.createWriteStream(outPath));
+  /*
   writeStream.once('error', function(err){
     del(outPath, function(){
       next(err);
     });
   });
+  */
+
   writeStream.once('finish', function(){
-    io.emit('video', id);
     updateVideoList(function(err){
       if (err) {
         return next(err);
       }
+      io.emit('video', id);
       res.status(200);
       res.end();
     });
@@ -102,7 +106,7 @@ function updateVideoList(cb){
         return path.basename(file, path.extname(file));
       })
       .sort(function(a, b) {
-          return b-a;
+          return parseInt(b)-parseInt(a);
       })
       .slice(0, maxVideos)
       .reverse();

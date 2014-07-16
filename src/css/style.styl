@@ -6,6 +6,9 @@ global-reset()
 html, body
   width: 100%
   height: 100%
+  transform: translateZ(0)
+  backface-visibility: hidden
+  perspective: 1000
 
 body
   font-family: 'Open Sans', sans-serif
@@ -63,6 +66,7 @@ body
 .recording
   border-radius: 0
   background-color: rgba(0,0,0,0.6)
+  background-attachment: fixed
   bottom: 0
   left: 0
   height: 100%
