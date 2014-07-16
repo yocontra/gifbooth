@@ -2,6 +2,7 @@ var gum = require('getusermedia');
 var React = require('react');
 var CaptureMedia = require('./CaptureMedia');
 
+var maxVideos = 15;
 var QVGA = {
   minFrameRate: 30,
   minWidth: 320,
@@ -40,7 +41,7 @@ var Application = React.createClass({
 
   addVideo: function(id) {
     var vids = this.state.videos;
-    if (this.state.videos.length >= 20) {
+    if (this.state.videos.length >= maxVideos) {
       vids.pop();
     }
     vids.unshift({
