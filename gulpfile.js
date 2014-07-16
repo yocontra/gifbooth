@@ -13,13 +13,17 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
-var server = require('./server').listen(9090);
-
+var mkdirp = require('mkdirp');
+var rimraf = require('rimraf');
 var globs = {
   js: ['data/**/*', 'src/js/**/*.js'],
   css: 'src/css/**/*.styl',
   static: ['src/**/*', '!src/css/**/*.styl', '!src/js/*.js']
 };
+
+rimraf.sync('./dist');
+mkdirp.sync('./dist/video');
+var server = require('./server').listen(9090);
 
 gulp.task('watch', function(){
   gulp.watch(globs.css, ['css']);

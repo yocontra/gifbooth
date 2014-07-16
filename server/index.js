@@ -26,8 +26,6 @@ updateVideoList(function(err){
   if (err) console.error('Error updating video list', err);
   if (videoList.length >= 1) {
     counter = parseInt(videoList[videoList.length-1], 10);
-  } else {
-    counter = 0;
   }
   console.log('Counter is', counter);
 });
@@ -36,20 +34,19 @@ var rateLimit = rate.middleware({interval: 6, limit: 3});
 
 app.use(ipfilter(banned, {log: false}));
 app.use(express.static(path.join(__dirname, '../dist')));
-app.use(methodOverride());
+//app.use(methodOverride());
 
 app.post('/upload', rateLimit, checkAPIKey, uploadVideo);
 app.get('/clean', rateLimit, checkAPIKey, empty);
 io.on('connection', sendVideoList);
 
 function empty(req, res, next){
-  videoList = [];
-  counter = 0;
-  io.emit('clear');
   clearExcept([], function(err){
     if (err) {
       return next(err);
     }
+    videoList = [];
+    io.emit('clear');
     res.status(200);
     res.end();
   });
@@ -62,25 +59,26 @@ function sendVideoList(socket){
 function uploadVideo(req, res, next){
   var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   var id = ++counter;
-  console.log('Clip', id, 'from', ip);
+  console.log('Clip', id, 'uploading from', ip);
 
   var outPath = path.join(vidPath, id+'.webm');
 
   var writeStream = req.pipe(fs.createWriteStream(outPath));
-  /*
   writeStream.once('error', function(err){
+    console.error('Error writing file', err);
     del(outPath, function(){
       next(err);
     });
   });
-  */
 
   writeStream.once('finish', function(){
+    console.log('Clip', id, 'uploaded from', ip);
+
+    io.emit('video', id);
     updateVideoList(function(err){
       if (err) {
         return next(err);
       }
-      io.emit('video', id);
       res.status(200);
       res.end();
     });
@@ -106,7 +104,7 @@ function updateVideoList(cb){
         return path.basename(file, path.extname(file));
       })
       .sort(function(a, b) {
-          return parseInt(b)-parseInt(a);
+          return parseInt(b, 10)-parseInt(a, 10);
       })
       .slice(0, maxVideos)
       .reverse();
