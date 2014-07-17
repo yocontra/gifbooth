@@ -36,6 +36,7 @@ module.exports = function(el, time, cb) {
     var output = encoder.compile();
     vid.src = '';
     vid.pause();
+    vid.removeEventListener('playing', grab, false);
     cb(null, output);
   };
 
