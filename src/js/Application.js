@@ -2,7 +2,7 @@ var gum = require('getusermedia');
 var React = require('react');
 var CaptureMedia = require('./CaptureMedia');
 
-var maxVideos = 15;
+var maxVideos = 10;
 var QVGA = {
   minFrameRate: 30,
   minWidth: 320,
