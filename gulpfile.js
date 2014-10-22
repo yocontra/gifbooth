@@ -16,7 +16,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var mkdirp = require('mkdirp');
 var rimraf = require('rimraf');
 var globs = {
-  js: ['data/**/*', 'src/js/**/*.js'],
+  js: 'src/js/**/*.js',
   css: 'src/css/**/*.styl',
   static: ['src/**/*', '!src/css/**/*.styl', '!src/js/*.js']
 };
@@ -24,6 +24,15 @@ var globs = {
 rimraf.sync('./dist');
 mkdirp.sync('./dist/video');
 var server = require('./server').listen(9090);
+
+var bundleCache = {};
+var pkgCache = {};
+var bundler = browserify('./src/js/script.js', {
+  cache: bundleCache,
+  packageCache: pkgCache,
+  fullPaths: true,
+  debug: true
+});
 
 gulp.task('watch', function(){
   gulp.watch(globs.css, ['css']);
@@ -41,8 +50,8 @@ gulp.task('static', function(){
 });
 
 gulp.task('js', function(){
-  return browserify('./src/js/script.js')
-    .bundle({debug: true})
+  return bundler.bundle()
+    // browserify -> gulp transfer
     .pipe(source('script.js'))
     .pipe(buffer())
     .pipe(cached('js'))

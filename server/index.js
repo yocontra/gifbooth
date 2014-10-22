@@ -1,3 +1,5 @@
+var config = require('../config');
+
 var http = require('http');
 var express = require('express');
 var sio = require('socket.io');
@@ -16,9 +18,6 @@ var app = express();
 var server = http.Server(app);
 var io = sio(server);
 
-var keys = [];//['de-la-party'];
-var banned = ['67.212.112.186'];
-var maxVideos = 10;
 var counter = 0;
 
 var videoList = [];
@@ -32,25 +31,12 @@ updateVideoList(function(err){
 
 var rateLimit = rate.middleware({interval: 6, limit: 3});
 
-app.use(ipfilter(banned, {log: false}));
+app.use(ipfilter(nconf.get('banned'), {log: false}));
 app.use(express.static(path.join(__dirname, '../dist')));
-//app.use(methodOverride());
+app.use(methodOverride());
 
-app.post('/upload', rateLimit, checkAPIKey, uploadVideo);
-app.get('/clean', rateLimit, checkAPIKey, empty);
+app.post('/upload', rateLimit, uploadVideo);
 io.on('connection', sendVideoList);
-
-function empty(req, res, next){
-  clearExcept([], function(err){
-    if (err) {
-      return next(err);
-    }
-    videoList = [];
-    io.emit('clear');
-    res.status(200);
-    res.end();
-  });
-}
 
 function sendVideoList(socket){
   videoList.forEach(socket.emit.bind(socket, 'video'));
@@ -85,15 +71,6 @@ function uploadVideo(req, res, next){
   });
 }
 
-function checkAPIKey(req, res, next){
-  if (keys.length === 0) return next();
-  if (keys.indexOf(req.query.key) === -1) {
-    res.status(401);
-    return res.end();
-  }
-  next();
-}
-
 function updateVideoList(cb){
   fs.readdir(vidPath, function(err, files){
     if (err) {
@@ -106,10 +83,10 @@ function updateVideoList(cb){
       .sort(function(a, b) {
           return parseInt(b, 10)-parseInt(a, 10);
       })
-      .slice(0, maxVideos)
+      .slice(0, nconf.get('backLog'))
       .reverse();
     
-    if (files.length > maxVideos) {
+    if (files.length > nconf.get('backLog')) {
       return clearExcept(videoList, cb);
     }
     cb();

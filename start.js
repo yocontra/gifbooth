@@ -1,6 +1,6 @@
+var config = require('./config');
 var app = require('./server');
 
-var port = process.env.PORT || 9090;
-app.listen(port, function(){
+app.listen(config.get('port'), function(){
   console.log('Listening on', port);
 });
