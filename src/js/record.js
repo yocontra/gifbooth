@@ -37,7 +37,7 @@ module.exports = function(el, time, cb) {
     vid.src = '';
     vid.pause();
     vid.removeEventListener('playing', grab, false);
-    cb(null, output);
+    cb(output);
   };
 
   vid.addEventListener('playing', grab, false);

@@ -1,19 +1,4 @@
-var gum = require('getusermedia');
-var CaptureMedia = require('./CaptureMedia');
-
-var maxVideos = 10;
-var QVGA = {
-  minFrameRate: 30,
-  minWidth: 320,
-  minHeight: 240
-};
-
-var videoConstraints = {
-  mandatory: QVGA,
-  optional: [
-    {facingMode: 'user'}
-  ]
-};
+var BottomBar = require('./BottomBar');
 
 var Application = React.createClass({
   displayName: 'Application',
@@ -23,21 +8,16 @@ var Application = React.createClass({
 
   getInitialState: function() {
     return {
-      stream: null,
       videos: []
     };
   },
 
   componentWillMount: function() {
-    gum({video: true, audio: false}, this.handleGUM);
     this.props.socket.on('video', this.addVideo);
   },
 
   addVideo: function(id) {
     var vids = this.state.videos;
-    if (this.state.videos.length >= maxVideos) {
-      vids.pop();
-    }
     vids.unshift({
       id: id,
       url: '/video/'+id
@@ -45,41 +25,37 @@ var Application = React.createClass({
     this.setState({videos: vids});
   },
 
-  handleGUM: function(err, stream){
-    if (stream) {
-      this.setState({
-        stream: URL.createObjectURL(stream)
-      });
-      return;
-    }
-    console.error(err);
+  sendMessage: function(txt, vid) {
+    // TODO: send txt too
+    // TODO: use superagent here
+    var req = new XMLHttpRequest();
+    req.open('POST', '/upload', true);
+    req.send(vid);
   },
 
   render: function() {
-    var children = [];
+    var bar = BottomBar({
+      ref: 'bottomBar',
+      key: 'bottomBar',
+      recordTime: 3000,
+      onSubmit: this.sendMessage
+    });
 
-    if (this.state.stream) {
-      children.push(CaptureMedia({
-        ref: 'selfie',
-        key: 'getMedia',
-        src: this.state.stream
-      }));
-    }
-
-    this.state.videos.forEach(function(vid){
-      children.push(React.DOM.video({
+    // TODO: make this a component w/ txt
+    var videos = this.state.videos.map(function(vid){
+      return React.DOM.video({
         key: vid.id,
         src: vid.url,
         loop: true,
         controls: false,
         autoPlay: true,
         className: 'remote-vid'
-      }));
+      });
     });
 
     var container = React.DOM.div({
       className: 'wall'
-    }, children);
+    }, [bar].concat(videos));
 
     return container;
   }

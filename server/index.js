@@ -30,6 +30,9 @@ io.on('connection', sendVideoList);
 // DEPRECATED
 function sendVideoList(socket){
   mongo.grid.files.find().toArray(function(err, files) {
+    if (!files) {
+      return;
+    }
     files.forEach(function(file){
       socket.emit('video', file._id);
     });
@@ -41,7 +44,7 @@ function fetchVideoList(req, res, next){
     if (err) {
       return res.status(500).json({error: err}).end();
     }
-    res.status(200).json(files).end();
+    res.status(200).json(files || []).end();
   });
 }
 
