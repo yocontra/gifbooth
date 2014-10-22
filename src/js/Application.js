@@ -31,11 +31,6 @@ var Application = React.createClass({
   componentWillMount: function() {
     gum({video: true, audio: false}, this.handleGUM);
     this.props.socket.on('video', this.addVideo);
-    this.props.socket.on('clear', this.clear);
-  },
-
-  clear: function() {
-    this.setState({videos: []});
   },
 
   addVideo: function(id) {
