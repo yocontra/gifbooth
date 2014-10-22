@@ -1,4 +1,3 @@
-var React = require('react');
 var record = require('./record');
 
 var upload = function(blob) {

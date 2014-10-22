@@ -1,5 +1,4 @@
 var gum = require('getusermedia');
-var React = require('react');
 var CaptureMedia = require('./CaptureMedia');
 
 var maxVideos = 10;
