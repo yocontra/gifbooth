@@ -1,4 +1,5 @@
 var BottomBar = require('./BottomBar');
+var ChatMessage = require('./ChatMessage');
 
 var Application = React.createClass({
   displayName: 'Application',
@@ -8,29 +9,32 @@ var Application = React.createClass({
 
   getInitialState: function() {
     return {
-      videos: []
+      messages: []
     };
   },
 
   componentWillMount: function() {
-    this.props.socket.on('video', this.addVideo);
+    this.props.socket.on('message', this.addMessage);
   },
 
-  addVideo: function(id) {
-    var vids = this.state.videos;
-    vids.unshift({
-      id: id,
-      url: '/video/'+id
+  addMessage: function(msg) {
+    var msgs = this.state.messages;
+    msgs.unshift({
+      id: msg.video,
+      text: msg.text,
+      url: '/video/'+msg.video
     });
-    this.setState({videos: vids});
+    this.setState({messages: msgs});
   },
 
   sendMessage: function(txt, vid) {
-    // TODO: send txt too
-    // TODO: use superagent here
+    var formData = new FormData();
+    formData.append('text', txt);
+    formData.append('video', vid);
+
     var req = new XMLHttpRequest();
     req.open('POST', '/upload', true);
-    req.send(vid);
+    req.send(formData);
   },
 
   render: function() {
@@ -41,21 +45,11 @@ var Application = React.createClass({
       onSubmit: this.sendMessage
     });
 
-    // TODO: make this a component w/ txt
-    var videos = this.state.videos.map(function(vid){
-      return React.DOM.video({
-        key: vid.id,
-        src: vid.url,
-        loop: true,
-        controls: false,
-        autoPlay: true,
-        className: 'remote-vid'
-      });
-    });
+    var msgs = this.state.messages.map(ChatMessage);
 
     var container = React.DOM.div({
       className: 'wall'
-    }, [bar].concat(videos));
+    }, [bar].concat(msgs));
 
     return container;
   }

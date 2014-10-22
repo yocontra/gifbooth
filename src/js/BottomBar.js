@@ -31,7 +31,8 @@ var BottomBar = React.createClass({
   render: function() {
     var selfie = CaptureMedia({
       ref: 'selfie',
-      key: 'selfie'
+      key: 'selfie',
+      className: 'bottom-bar-selfie'
     });
 
     var txt = React.DOM.input({
@@ -39,7 +40,8 @@ var BottomBar = React.createClass({
       key: 'txt',
       placeholder: 'Type a message...',
       onKeyPress: this.handleKeyPress,
-      disabled: this.state.locked
+      disabled: this.state.locked,
+      className: 'bottom-bar-text'
     });
 
     return React.DOM.div({

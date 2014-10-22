@@ -5,7 +5,10 @@ var http = require('http');
 var express = require('express');
 var sio = require('socket.io');
 var uuid = require('uuid');
+var os = require('os');
+var fs = require('fs');
 
+var multer  = require('multer');
 var rate = require('express-rate');
 var ipfilter = require('ipfilter');
 var bodyParser = require('body-parser');
@@ -18,9 +21,19 @@ var io = sio(server);
 
 var rateLimit = rate.middleware({interval: 6, limit: 3});
 
-app.use(ipfilter(config.get('banned'), {log: false}));
-app.use(express.static(path.join(__dirname, '../dist')));
 app.use(methodOverride());
+app.use(express.static(path.join(__dirname, '../dist')));
+
+app.use(ipfilter(config.get('banned'), {log: false}));
+app.use(multer({
+  dest: os.tmpdir(),
+  limits: {
+    files: 1,
+    fields: 1,
+    fieldNameSize: 10,
+    parts: 2
+  }
+}));
 
 app.post('/upload', rateLimit, uploadVideo);
 app.get('/videos', fetchVideoList);
@@ -34,11 +47,16 @@ function sendVideoList(socket){
       return;
     }
     files.forEach(function(file){
-      socket.emit('video', file._id);
+      var txt = file.metadata ? file.metadata.text : null;
+      socket.emit('message', {
+        video: file._id,
+        text: txt
+      });
     });
   });
 }
 
+// TODO: break these out into modules
 function fetchVideoList(req, res, next){
   mongo.grid.files.find().toArray(function(err, files) {
     if (err) {
@@ -49,16 +67,31 @@ function fetchVideoList(req, res, next){
 }
 
 function uploadVideo(req, res, next){
+  var vid = req.files.video;
+  var txt = req.body.text;
+
+  // TODO: check vid mimetype
+  if (!vid) {
+    return res.status(400).end();
+  }
+  // TODO: convert
   var outStream = mongo.grid.createWriteStream({
     mode: 'w',
-    content_type: 'video/webm' // TODO: convert
+    content_type: vid.mimetype,
+    metadata: {
+      text: txt
+    }
   });
   outStream.once('close', success);
   outStream.once('error', fail);
-  req.pipe(outStream);
+
+  fs.createReadStream(vid.path).pipe(outStream);
 
   function success(file) {
-    io.emit('video', file._id);
+    io.emit('message', {
+      video: file._id,
+      text: txt
+    });
     res.status(200).end();
   }
 
@@ -69,7 +102,8 @@ function uploadVideo(req, res, next){
 }
 
 function fetchVideo(req, res, next){
-  var contentType = 'video/webm'; // TODO: extension or accepts
+  // TODO: extension or accepts
+  var contentType = 'video/webm';
 
   var readStream = mongo.grid.createReadStream({
     _id: req.params.id,

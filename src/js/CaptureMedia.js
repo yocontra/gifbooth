@@ -49,7 +49,7 @@ var CaptureMedia = React.createClass({
       src: this.state.src,
       muted: true,
       autoPlay: true,
-      className: 'video-preview',
+      className: this.props.className,
       style: this.props.style
     });
   }
