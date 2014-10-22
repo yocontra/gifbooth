@@ -15,14 +15,15 @@ var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
 var mkdirp = require('mkdirp');
 var rimraf = require('rimraf');
+var debug = require('gulp-debug');
+
 var globs = {
   js: 'src/js/**/*.js',
   css: 'src/css/**/*.styl',
-  static: ['src/**/*', '!src/css/**/*.styl', '!src/js/*.js']
+  static: ['src/**/*', '!src/css/**/*.styl', '!src/js/**/*.js']
 };
 
 rimraf.sync('./dist');
-mkdirp.sync('./dist/video');
 var server = require('./server').listen(9090);
 
 var bundleCache = {};
@@ -43,8 +44,8 @@ gulp.task('watch', function(){
 gulp.task('static', function(){
   return gulp.src(globs.static)
     .pipe(cached('build'))
-    .pipe(gif('*.js', uglify()))
-    .pipe(gif('*.css', csso()))
+    //.pipe(gif('*.js', uglify()))
+    //.pipe(gif('*.css', csso()))
     .pipe(gulp.dest('dist'))
     .pipe(lr());
 });

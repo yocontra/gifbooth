@@ -1,4 +1,6 @@
 var React = require('react');
+window.React = React; // for devtools
+
 var Application = require('./Application');
 
 if (!window.chrome) {

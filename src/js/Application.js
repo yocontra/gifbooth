@@ -46,7 +46,7 @@ var Application = React.createClass({
     }
     vids.unshift({
       id: id,
-      url: '/video/'+id+'.webm'
+      url: '/video/'+id
     });
     this.setState({videos: vids});
   },

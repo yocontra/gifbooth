@@ -2,8 +2,11 @@
   "name": "site",
   "devDependencies": {
     "autoprefixer-stylus": "^0.3.0",
+    "browserify": "^6.1.0",
     "gulp": "^3.8.1",
     "gulp-cached": "^1.0.0",
+    "gulp-csso": "^0.2.9",
+    "gulp-debug": "^1.0.1",
     "gulp-gh-pages": "^0.4.0",
     "gulp-if": "^1.2.1",
     "gulp-livereload": "^2.1.0",
@@ -13,9 +16,7 @@
     "jeet": "^6.1.2",
     "nib": "^1.0.3",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.0.0",
-    "gulp-csso": "^0.2.9",
-    "browserify": "^6.1.0"
+    "vinyl-source-stream": "^1.0.0"
   },
   "dependencies": {
     "async": "^0.9.0",
@@ -26,11 +27,13 @@
     "express": "^4.6.1",
     "express-rate": "0.0.1",
     "getusermedia": "^1.0.0",
+    "gridfs-stream": "^0.5.1",
     "gulp-sourcemaps": "^1.1.0",
     "ipfilter": "0.0.4",
     "lodash": "^2.4.1",
     "method-override": "^2.1.1",
     "mkdirp": "^0.5.0",
+    "mongoose": "^3.8.17",
     "nconf": "^0.6.9",
     "raf": "^2.0.1",
     "react": "^0.11.2",
