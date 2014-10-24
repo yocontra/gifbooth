@@ -24,7 +24,7 @@ var globs = {
 };
 
 rimraf.sync('./dist');
-var server = require('./server').listen(9090);
+var server = require('./server');
 
 var bundleCache = {};
 var pkgCache = {};
