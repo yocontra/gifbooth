@@ -3,21 +3,24 @@
 
 global-reset()
 
-thefont()
-  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif
-  font-weight: 300
+better-font()
   -webkit-text-size-adjust: 100%
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
   text-rendering: optimizeLegibility
   font-feature-settings: 'liga', 'kern'
+  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Arial, Helvetica, sans-serif
+  font-weight: 300
 
 html, body
-  thefont()
+  better-font()
   width: 100%
   height: 100%
-  color: #fff
-  background-color: #333
+
+  background: linear-gradient(90deg, #003973 10%, #E5E5BE 90%)
+  background-repeat: no-repeat
+  background-attachment: fixed
+  background-blend-mode: multiply
 
 // remove for perf
 *
@@ -27,6 +30,7 @@ html, body
   center()
 
 .chat-message
+  border-radius: 3px
   overflow: hidden
   position: relative
   display: inline-block
@@ -36,18 +40,14 @@ html, body
   .chat-message-video
     display: block
     width: 100%
-    border-top-left-radius: 3px
-    border-top-right-radius: 3px
 
   .chat-message-text
     display: inline-block
     text-align: center
-    color: #fff
-    padding: 3px
+    background-color: #fff
+    padding: 5px
     width: 100%
-    background-color: #000
-    border-bottom-left-radius: 3px
-    border-bottom-right-radius: 3px
+    color: #333
 
 // TODO: make the size of the camera the same as the grid vid size
 .bottom-bar
@@ -57,17 +57,18 @@ html, body
   width: 100%
 
   .bottom-bar-selfie
-    span(1/3)
+    span(1/5)
     max-height: 25vh
     background-color: #000
 
   .bottom-bar-text
-    thefont()
-    span(2/3)
+    better-font()
+    span(4/5)
     absolute: bottom right
     border: none
     outline: none
     font-size: 1.25em
     padding: 6px
-    color: #000
+    padding-left: 15px
+    color: #333
     background-color: #fff
