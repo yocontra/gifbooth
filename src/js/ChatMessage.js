@@ -15,6 +15,7 @@ var ChatMessage = React.createClass({
   render: function() {
     var vid = React.DOM.video({
       ref: 'video',
+      key: 'video',
       src: this.props.url,
       loop: true,
       controls: false,
@@ -24,6 +25,7 @@ var ChatMessage = React.createClass({
 
     var msg = React.DOM.div({
       ref: 'text',
+      key: 'text',
       className: 'chat-message-text'
     }, this.props.text);
 

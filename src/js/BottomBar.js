@@ -1,6 +1,8 @@
 var CaptureMedia = require('./CaptureMedia');
 
 var BottomBar = React.createClass({
+  mixins: [React.addons.LinkedStateMixin],
+
   displayName: 'BottomBar',
   propTypes: {
     recordTime: React.PropTypes.number.isRequired,
@@ -14,11 +16,16 @@ var BottomBar = React.createClass({
   },
 
   submit: function() {
-    this.setState({locked: true});
-    var txt = this.refs.txt.getDOMNode().value;
+    this.setState({
+      locked: true
+    });
+    var txt = this.state.text;
     this.refs.selfie.record(this.props.recordTime, function(blob){
       this.props.onSubmit(txt, blob);
-      this.setState({locked: false});
+      this.setState({
+        locked: false,
+        text: ''
+      });
     }.bind(this));
   },
 
@@ -41,7 +48,8 @@ var BottomBar = React.createClass({
       placeholder: 'Type a message...',
       onKeyPress: this.handleKeyPress,
       disabled: this.state.locked,
-      className: 'bottom-bar-text'
+      className: 'bottom-bar-text',
+      valueLink: this.linkState('text')
     });
 
     return React.DOM.div({

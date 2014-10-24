@@ -20,6 +20,7 @@ var Application = React.createClass({
   addMessage: function(msg) {
     var msgs = this.state.messages;
     msgs.unshift({
+      key: msg.video,
       id: msg.video,
       text: msg.text,
       url: '/video/'+msg.video

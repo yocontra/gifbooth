@@ -1,7 +1,6 @@
-var config = require('../../../config');
-var mongo = require('../mongo');
-
 var http = require('http');
+var sio = require('socket.io');
+
 var express = require('express');
 var os = require('os');
 var multer = require('multer');
@@ -14,8 +13,12 @@ var getVideo = require('./endpoints/getVideo');
 var createMessage = require('./endpoints/createMessage');
 var getMessages = require('./endpoints/getMessages');
 
+var config = require('../../../config');
+var mongo = require('../mongo');
+
 var app = express();
 var server = http.Server(app);
+var wss = sio(server);
 
 var rateLimit = rate.middleware({
   interval: 6,
@@ -36,9 +39,32 @@ app.use(multer({
   }
 }));
 
+// some middleware to attach stuff to requests to avoid dependency injection
+app.use(function(req, res, next){
+  req.wss = wss;
+  next();
+});
+
 app.post('/upload', rateLimit, createMessage);
 app.get('/messages', getMessages);
 app.get('/video/:id', getVideo);
 
-app.http = server;
-module.exports = app;
+// DEPRECATED
+wss.on('connection', sendVideoList);
+function sendVideoList(socket){
+  mongo.grid.files.find().toArray(function(err, files) {
+    if (!files) {
+      return;
+    }
+    files.forEach(function(file){
+      var txt = file.metadata ? file.metadata.text : null;
+      socket.emit('message', {
+        video: file._id,
+        text: txt
+      });
+    });
+  });
+}
+// END
+
+module.exports = server;

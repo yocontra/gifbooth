@@ -1,5 +1,4 @@
 var mongo = require('../../mongo');
-var io = require('../../wss');
 var fs = require('fs');
 
 function createMessage(req, res, next){
@@ -28,7 +27,7 @@ function createMessage(req, res, next){
   fs.createReadStream(vid.path).pipe(outStream);
 
   function success(file) {
-    io.emit('message', {
+    req.wss.emit('message', {
       video: file._id,
       text: txt
     });
