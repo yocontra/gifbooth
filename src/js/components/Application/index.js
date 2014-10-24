@@ -1,5 +1,5 @@
-var BottomBar = require('./BottomBar');
-var ChatMessage = require('./ChatMessage');
+var BottomBar = require('../BottomBar');
+var ChatMessage = require('../ChatMessage');
 
 var Application = React.createClass({
   displayName: 'Application',
@@ -46,11 +46,16 @@ var Application = React.createClass({
       onSubmit: this.sendMessage
     });
 
-    var msgs = this.state.messages.map(ChatMessage);
+
+    var msgs = React.DOM.div({
+      className: 'message-wall',
+      key: 'messageWall',
+      ref: 'messageWall'
+    }, this.state.messages.map(ChatMessage));
 
     var container = React.DOM.div({
-      className: 'wall'
-    }, [bar].concat(msgs));
+      className: 'application'
+    }, [msgs, bar]);
 
     return container;
   }

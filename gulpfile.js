@@ -28,7 +28,7 @@ var server = require('./server');
 
 var bundleCache = {};
 var pkgCache = {};
-var bundler = browserify('./src/js/script.js', {
+var bundler = browserify('./src/js/index.js', {
   cache: bundleCache,
   packageCache: pkgCache,
   fullPaths: true,

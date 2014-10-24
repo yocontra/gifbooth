@@ -26,7 +26,7 @@
     "express": "^4.6.1",
     "express-rate": "0.0.1",
     "getusermedia": "^1.0.0",
-    "gridfs-stream": "^0.5.1",
+    "gridfs-stream": "https://github.com/aheckmann/gridfs-stream/archive/master.tar.gz",
     "gulp-sourcemaps": "^1.1.0",
     "ipfilter": "0.0.4",
     "lodash": "^2.4.1",

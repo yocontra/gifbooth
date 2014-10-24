@@ -16,6 +16,9 @@ var videoConstraints = {
 
 var CaptureMedia = React.createClass({
   displayName: 'CaptureMedia',
+  propTypes: {
+    onStream: React.PropTypes.func
+  },
 
   getInitialState: function() {
     return {
@@ -37,6 +40,9 @@ var CaptureMedia = React.createClass({
       stream: stream,
       src: URL.createObjectURL(stream)
     });
+    if (this.props.onStream) {
+      this.props.onStream(stream);
+    }
   },
 
   record: function(time, cb) {
