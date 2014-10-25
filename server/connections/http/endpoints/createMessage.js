@@ -1,5 +1,6 @@
 var mongo = require('../../mongo');
 var fs = require('fs');
+var ffmpeg = require('fluent-ffmpeg');
 
 function createMessage(req, res, next){
   var vid = req.files.video;
@@ -14,6 +15,7 @@ function createMessage(req, res, next){
 
   // TODO: transcode
   // TODO: break out the file upload to gridfs into a fn
+  var srcStream = fs.createReadStream(vid.path);
   var outStream = mongo.grid.createWriteStream({
     mode: 'w',
     content_type: vid.mimetype,
@@ -24,7 +26,20 @@ function createMessage(req, res, next){
   outStream.once('close', success);
   outStream.once('error', fail);
 
-  fs.createReadStream(vid.path).pipe(outStream);
+  var cmd = ffmpeg(srcStream)
+    .videoBitrate('1024k')
+    .noAudio()
+    .fps(23.976)
+    .size('400x?')
+    .aspect('16:9')
+    .autoPad('white')
+    .toFormat('webm');
+  
+  cmd.pipe(outStream);
+
+  cmd.once('error', function(err, stdout, stderr){
+    console.log(stderr);
+  });
 
   function success(file) {
     req.wss.emit('message', {

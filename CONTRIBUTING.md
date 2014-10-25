@@ -64,16 +64,9 @@ behaviour is not welcome.
 
 # Communication
 
-There is an IRC channel on irc.freenode.net, channel `#gifbooth`. You're
-welcome to drop in and ask questions, discuss bugs and such. The channel is
-not currently logged.
-
 GitHub issues are the primary way for communicating about specific proposed
 changes to this project.
 
-In both contexts, please follow the conduct guidelines above. Language issues
+In any context, please follow the conduct guidelines above. Language issues
 are often contentious and we'd like to keep discussion brief, civil and focused
 on what we're actually doing, not wandering off into too much imaginary stuff.
-
-# Frequently Asked Questions
-*please add*

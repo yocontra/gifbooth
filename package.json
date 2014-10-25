@@ -25,6 +25,7 @@
     "envify": "^3.0.0",
     "express": "^4.6.1",
     "express-rate": "0.0.1",
+    "fluent-ffmpeg": "https://github.com/sualko/node-fluent-ffmpeg/archive/master.tar.gz",
     "getusermedia": "^1.0.0",
     "gridfs-stream": "https://github.com/aheckmann/gridfs-stream/archive/master.tar.gz",
     "gulp-sourcemaps": "^1.1.0",

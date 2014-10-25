@@ -13,7 +13,6 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
-var mkdirp = require('mkdirp');
 var rimraf = require('rimraf');
 var debug = require('gulp-debug');
 
@@ -44,8 +43,8 @@ gulp.task('watch', function(){
 gulp.task('static', function(){
   return gulp.src(globs.static)
     .pipe(cached('build'))
-    //.pipe(gif('*.js', uglify()))
-    //.pipe(gif('*.css', csso()))
+    .pipe(gif('*.js', uglify()))
+    .pipe(gif('*.css', csso()))
     .pipe(gulp.dest('dist'))
     .pipe(lr());
 });

@@ -4,7 +4,7 @@ var defaults = {
   port: 9090,
   banned: [],
   backLog: 20,
-  mongo: 'mongodb://localhost/booth-dev-local'
+  mongo: 'mongodb://localhost/booth-dev-local-2'
 };
 
 nconf.argv()
