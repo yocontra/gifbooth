@@ -5,7 +5,7 @@ var vid = document.createElement('video');
 var can = document.createElement('canvas');
 
 module.exports = function(el, time, cb) {
-  var encoder = new whammy.Video(40, 1);
+  var encoder = new whammy.Video(23.976, 1);
   //delete encoder.duration; // hack
 
   var w = el.videoWidth;

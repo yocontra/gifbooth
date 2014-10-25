@@ -31,8 +31,6 @@ function createMessage(req, res, next){
     .noAudio()
     .fps(23.976)
     .size('400x?')
-    .aspect('16:9')
-    .autoPad('white')
     .toFormat('webm');
   
   cmd.pipe(outStream);
