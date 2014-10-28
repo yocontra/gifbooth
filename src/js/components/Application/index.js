@@ -42,7 +42,7 @@ var Application = React.createClass({
     var bar = BottomBar({
       ref: 'bottomBar',
       key: 'bottomBar',
-      recordTime: 3000,
+      recordTime: 4000,
       onSubmit: this.sendMessage
     });
 

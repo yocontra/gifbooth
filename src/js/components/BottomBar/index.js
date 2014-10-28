@@ -43,6 +43,10 @@ var BottomBar = React.createClass({
   },
 
   render: function() {
+    if (!window.chrome) {
+      return null;
+    }
+
     var selfie = CaptureMedia({
       ref: 'selfie',
       key: 'selfie',

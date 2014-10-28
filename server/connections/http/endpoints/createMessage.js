@@ -35,10 +35,6 @@ function createMessage(req, res, next){
   
   cmd.pipe(outStream);
 
-  cmd.once('error', function(err, stdout, stderr){
-    console.log(stderr);
-  });
-
   function success(file) {
     req.wss.emit('message', {
       video: file._id,
