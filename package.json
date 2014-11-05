@@ -27,7 +27,7 @@
     "express-rate": "0.0.1",
     "fluent-ffmpeg": "https://github.com/sualko/node-fluent-ffmpeg/archive/master.tar.gz",
     "getusermedia": "^1.0.0",
-    "gridfs-stream": "https://github.com/aheckmann/gridfs-stream/archive/master.tar.gz",
+    "gridfs-stream": "^0.5.3",
     "gulp-sourcemaps": "^1.1.0",
     "ipfilter": "0.0.4",
     "lodash": "^2.4.1",
