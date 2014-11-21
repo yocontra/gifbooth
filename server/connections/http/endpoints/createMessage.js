@@ -27,9 +27,9 @@ function createMessage(req, res, next){
   outStream.once('error', fail);
 
   var cmd = ffmpeg(srcStream)
-    .videoBitrate('1024k')
+    .videoBitrate('900k')
     .noAudio()
-    .fps(23.976)
+    .fps(30)
     .size('400x?')
     .toFormat('h264');
   
