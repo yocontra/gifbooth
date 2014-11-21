@@ -23,11 +23,11 @@ var ChatMessage = React.createClass({
       className: 'chat-message-video'
     });
 
-    var msg = React.DOM.div({
+    var msg = this.props.text ? React.DOM.div({
       ref: 'text',
       key: 'text',
       className: 'chat-message-text'
-    }, this.props.text);
+    }, this.props.text) : null;
 
     return React.DOM.div({
       ref: 'container',
