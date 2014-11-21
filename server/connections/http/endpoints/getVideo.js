@@ -2,8 +2,8 @@ var mongo = require('../../mongo');
 
 function getVideo(req, res, next){
   // TODO: extension or accepts
-  var contentType = 'video/webm';
-  res.type('webm');
+  var contentType = 'video/H264';
+  res.type('H264');
 
   var readStream = mongo.grid.createReadStream({
     _id: req.params.id,
