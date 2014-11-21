@@ -13,7 +13,7 @@ var ChatMessage = React.createClass({
   },
 
   render: function() {
-    var vid = React.DOM.video({
+    var vid = React.DOM.img({
       ref: 'video',
       key: 'video',
       src: this.props.url,

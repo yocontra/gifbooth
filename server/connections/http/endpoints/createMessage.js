@@ -18,7 +18,7 @@ function createMessage(req, res, next){
   var srcStream = fs.createReadStream(vid.path);
   var outStream = mongo.grid.createWriteStream({
     mode: 'w',
-    content_type: 'video/mp4',
+    content_type: 'video/webm',
     metadata: {
       text: txt
     }
@@ -27,11 +27,11 @@ function createMessage(req, res, next){
   outStream.once('error', fail);
 
   var cmd = ffmpeg(srcStream)
-    .videoBitrate('900k')
+    .videoBitrate('1024k')
     .noAudio()
     .fps(30)
     .size('400x?')
-    .toFormat('mp4');
+    .toFormat('gif');
   
   cmd.pipe(outStream);
 
