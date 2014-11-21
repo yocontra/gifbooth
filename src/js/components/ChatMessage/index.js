@@ -6,12 +6,6 @@ var ChatMessage = React.createClass({
     text: React.PropTypes.string
   },
 
-  getDefaultProps: function() {
-    return {
-      text: ''
-    };
-  },
-
   render: function() {
     var vid = React.DOM.img({
       ref: 'video',

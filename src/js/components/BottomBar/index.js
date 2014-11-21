@@ -11,6 +11,7 @@ var BottomBar = React.createClass({
 
   getInitialState: function() {
     return {
+      text: undefined,
       locked: true
     };
   },
@@ -24,7 +25,7 @@ var BottomBar = React.createClass({
       // unlock and reset input
       this.setState({
         locked: false,
-        text: ''
+        text: undefined
       });
     }.bind(this));
   },
