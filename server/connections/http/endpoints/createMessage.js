@@ -31,7 +31,7 @@ function createMessage(req, res, next){
     .noAudio()
     .fps(23.976)
     .size('400x?')
-    .toFormat('h264');
+    .toFormat('H264');
   
   cmd.pipe(outStream);
 
