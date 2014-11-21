@@ -18,7 +18,7 @@ function createMessage(req, res, next){
   var srcStream = fs.createReadStream(vid.path);
   var outStream = mongo.grid.createWriteStream({
     mode: 'w',
-    content_type: 'video/H264',
+    content_type: 'video/webm',
     metadata: {
       text: txt
     }
@@ -31,7 +31,7 @@ function createMessage(req, res, next){
     .noAudio()
     .fps(30)
     .size('400x?')
-    .toFormat('h264');
+    .toFormat('webm');
   
   cmd.pipe(outStream);
 
