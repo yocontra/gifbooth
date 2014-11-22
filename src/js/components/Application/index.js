@@ -1,5 +1,6 @@
 var BottomBar = require('../BottomBar');
 var ChatMessage = require('../ChatMessage');
+var request = require('superagent');
 
 var Application = React.createClass({
   displayName: 'Application',
@@ -14,7 +15,15 @@ var Application = React.createClass({
   },
 
   componentWillMount: function() {
-    this.props.socket.on('message', this.addMessage);
+    request.get('/messages')
+      .type('json')
+      .end(function(err, res){
+        if (err) {
+          return console.error(err);
+        }
+        res.body.forEach(this.addMessage);
+        this.props.socket.on('message', this.addMessage);
+      }.bind(this));
   },
 
   addMessage: function(msg) {
@@ -42,7 +51,7 @@ var Application = React.createClass({
     var bar = BottomBar({
       ref: 'bottomBar',
       key: 'bottomBar',
-      recordTime: 4000,
+      recordTime: 3000,
       onSubmit: this.sendMessage
     });
 

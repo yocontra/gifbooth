@@ -31,6 +31,15 @@ var CaptureMedia = React.createClass({
     gum({video: true, audio: false}, this.handleGUM);
   },
 
+  componentDidMount: function() {
+    var el = this.refs.videoElement.getDOMNode();
+    el.addEventListener('playing', this.onPlay, false);
+  },
+  componentWillUnmount: function() {
+    var el = this.refs.videoElement.getDOMNode();
+    el.removeEventListener('playing', this.onPlay, false);
+  },
+
   handleGUM: function(err, stream){
     if (!stream) {
       return console.error(err);
@@ -40,13 +49,16 @@ var CaptureMedia = React.createClass({
       stream: stream,
       src: URL.createObjectURL(stream)
     });
-    if (this.props.onStream) {
-      this.props.onStream(stream);
-    }
   },
 
   record: function(time, cb) {
     record(this.refs.videoElement.getDOMNode(), time, cb);
+  },
+
+  onPlay: function() {
+    if (this.props.onStream) {
+      this.props.onStream(this.state.stream);
+    }
   },
 
   render: function() {

@@ -60,7 +60,6 @@ body
       width: 100%
       color: #333
 
-// TODO: make the size of the camera the same as the grid vid size
 .bottom-bar
   z-index: 10
   position: relative
@@ -68,13 +67,17 @@ body
   width: 100%
 
   .bottom-bar-selfie
-    span(1/5)
     max-height: 25vh
     background-color: #000
 
+    @media (min-width: 768px)
+      span(1/4)
+
+    @media (max-width: 768px)
+      span(1/2)
+
   .bottom-bar-text
     better-font()
-    span(4/5)
     absolute: bottom right
     border: none
     outline: none
@@ -83,3 +86,9 @@ body
     padding-left: 15px
     color: #333
     background-color: #fff
+  
+    @media (min-width: 768px)
+      span(3/4)
+
+    @media (max-width: 768px)
+      span(1/2)

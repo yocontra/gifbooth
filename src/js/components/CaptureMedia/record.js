@@ -5,11 +5,12 @@ var vid = document.createElement('video');
 var can = document.createElement('canvas');
 
 module.exports = function(el, time, cb) {
-  var encoder = new whammy.Video(30, 0.8);
+  var encoder = new whammy.Video(30, 1);
   //delete encoder.duration; // hack
 
-  var w = el.videoWidth;
-  var h = el.videoHeight;
+  var aspectRatio = el.videoHeight / el.videoWidth;
+  var w = Math.max(el.videoWidth, 400);
+  var h = aspectRatio * w;
   can.width = w;
   can.height = h;
   vid.width = w;

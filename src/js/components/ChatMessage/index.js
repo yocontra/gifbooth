@@ -1,3 +1,5 @@
+var supported = ['webm', 'ogg', 'h264'];
+
 var ChatMessage = React.createClass({
   displayName: 'ChatMessage',
   propTypes: {
@@ -7,24 +9,32 @@ var ChatMessage = React.createClass({
   },
 
   render: function() {
-    var vid = React.DOM.img({
+    var sources = supported.map(function(ext){
+      return React.DOM.source({
+        ref: 'video-'+ext+'-source',
+        key: 'video-'+ext+'-source'+this.props.id,
+        src: this.props.url + '.' + ext,
+        type: 'video/' + ext
+      });
+    }, this);
+
+    var vid = React.DOM.video({
       ref: 'video',
-      key: 'video',
-      src: this.props.url,
+      key: 'video-'+this.props.id,
       loop: true,
       controls: false,
       autoPlay: true,
       className: 'chat-message-video'
-    });
+    }, sources);
 
     var msg = this.props.text ? React.DOM.div({
       ref: 'text',
-      key: 'text',
+      key: 'text-'+this.props.id,
       className: 'chat-message-text'
     }, this.props.text) : null;
 
     return React.DOM.div({
-      ref: 'container',
+      ref: 'container-'+this.props.id,
       className: 'chat-message'
     }, [vid, msg]);
   }

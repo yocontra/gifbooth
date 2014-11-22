@@ -1,56 +1,38 @@
-var mongo = require('../../mongo');
 var fs = require('fs');
-var ffmpeg = require('fluent-ffmpeg');
+var async = require('async');
+var transcode = require('../../../transcode');
+var config = require('../../../../config');
 
 function createMessage(req, res, next){
   var vid = req.files.video;
   var txt = req.body.text;
 
-  // TODO: check vid mimetype
   if (!vid) {
-    return res
-      .status(400)
-      .end();
+    return res.status(400).end();
   }
 
-  // TODO: transcode
-  // TODO: break out the file upload to gridfs into a fn
-  var srcStream = fs.createReadStream(vid.path);
-  var outStream = mongo.grid.createWriteStream({
-    mode: 'w',
-    content_type: 'video/webm',
-    metadata: {
-      text: txt
+  // TODO: validate we support vid mimetype
+
+  var meta = {
+    text: txt
+  };
+
+  async.forEach(config.get('types'), transcodeIt, function(err){
+    if (err) {
+      return res.status(500).json(err).end();
     }
-  });
-  outStream.once('close', success);
-  outStream.once('error', fail);
 
-  var cmd = ffmpeg(srcStream)
-    .videoBitrate('1024k')
-    .noAudio()
-    .fps(30)
-    .size('400x?')
-    .toFormat('gif');
-  
-  cmd.pipe(outStream);
+    res.status(200).end();
 
-  function success(file) {
     req.wss.emit('message', {
-      video: file._id,
-      text: txt
+      video: vid.name,
+      text: meta.text
     });
-    res
-      .status(200)
-      .end();
-  }
+  });
 
-  function fail(err) {
-    outStream.removeEventListener('close', success);
-    res
-      .status(500)
-      .json(err)
-      .end();
+  function transcodeIt(format, cb){
+    var srcStream = fs.createReadStream(vid.path);
+    transcode(vid.name, srcStream, format, meta, cb);
   }
 };
 

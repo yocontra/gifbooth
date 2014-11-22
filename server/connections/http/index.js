@@ -35,6 +35,7 @@ app.use(multer({
     files: 1,
     fields: 1,
     fieldNameSize: 10,
+    fieldSize: config.get('sizeLimit'),
     parts: 2
   }
 }));
@@ -47,24 +48,6 @@ app.use(function(req, res, next){
 
 app.post('/upload', rateLimit, createMessage);
 app.get('/messages', getMessages);
-app.get('/video/:id', getVideo);
-
-// DEPRECATED
-wss.on('connection', sendVideoList);
-function sendVideoList(socket){
-  mongo.grid.files.find().toArray(function(err, files) {
-    if (!files) {
-      return;
-    }
-    files.forEach(function(file){
-      var txt = file.metadata ? file.metadata.text : null;
-      socket.emit('message', {
-        video: file._id,
-        text: txt
-      });
-    });
-  });
-}
-// END
+app.get('/video/:id.:ext', getVideo);
 
 module.exports = server;

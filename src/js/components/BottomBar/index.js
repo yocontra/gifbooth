@@ -11,21 +11,24 @@ var BottomBar = React.createClass({
 
   getInitialState: function() {
     return {
-      text: undefined,
+      text: 'Loading...',
       locked: true
     };
   },
 
   submit: function() {
-    this.setState({locked: true});
     var txt = this.state.text;
+    this.setState({
+      text: 'Recording...',
+      locked: true
+    });
     this.refs.selfie.record(this.props.recordTime, function(blob){
       this.props.onSubmit(txt, blob);
 
       // unlock and reset input
       this.setState({
         locked: false,
-        text: undefined
+        text: ''
       });
     }.bind(this));
   },
@@ -39,7 +42,8 @@ var BottomBar = React.createClass({
 
   hasStream: function(stream) {
     this.setState({
-      locked: false
+      locked: false,
+      text: ''
     });
   },
 
@@ -65,9 +69,11 @@ var BottomBar = React.createClass({
       valueLink: this.linkState('text')
     });
 
+    var lockClass = this.state.locked ? 'locked' : 'unlocked';
+
     return React.DOM.div({
       ref: 'container',
-      className: 'bottom-bar'
+      className: 'bottom-bar ' + lockClass
     }, [selfie, txt]);
   }
 });
