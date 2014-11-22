@@ -32,7 +32,7 @@ function transcode(id, inputStream, ext, meta, cb) {
     .toFormat(ext);
 
   if (ext === 'gif') {
-    cmd = cmd.addOptions('-pix_fmt rgb32');
+    cmd = cmd.addOptions('-pix_fmt rgb24');
   }
   cmd.pipe(outStream);
   cmd.on('error', function(err, stdout, stderr){
