@@ -1,4 +1,16 @@
-var supported = ['webm', 'ogg', 'h264'];
+var supported = ['webm', 'ogg'];
+var canPlayAny;
+try {
+  var testVideo = document.createElement('video');
+  canPlayAny = supported.some(function(type){
+    return testVideo.canPlayType('video/'+type);
+  });
+} catch (err) {
+  console.log(err);
+  canPlayAny = false;
+}
+
+canPlayAny = false;
 
 var ChatMessage = React.createClass({
   displayName: 'ChatMessage',
@@ -9,6 +21,13 @@ var ChatMessage = React.createClass({
   },
 
   render: function() {
+    var gif = React.DOM.img({
+      ref: 'video-gif-source',
+      key: 'video-gif-source'+this.props.id,
+      src: this.props.url + '.gif',
+      className: 'chat-message-video'
+    });
+
     var sources = supported.map(function(ext){
       return React.DOM.source({
         ref: 'video-'+ext+'-source',
@@ -33,10 +52,11 @@ var ChatMessage = React.createClass({
       className: 'chat-message-text'
     }, this.props.text) : null;
 
+    var media = canPlayAny ? vid : gif;
     return React.DOM.div({
       ref: 'container-'+this.props.id,
       className: 'chat-message'
-    }, [vid, msg]);
+    }, [media, msg]);
   }
 });
 

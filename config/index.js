@@ -5,7 +5,7 @@ var defaults = {
   banned: [],
   backLog: 20,
   sizeLimit: 1000000,
-  types: ['gif', 'webm', 'h264', 'ogg'],
+  types: ['gif', 'webm', 'ogg'],
   mongo: 'mongodb://localhost/booth-dev-local-2'
 };
 
