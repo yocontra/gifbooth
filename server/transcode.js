@@ -3,10 +3,10 @@ var mime = require('mime');
 var mongo = require('./connections/mongo');
 
 var cfg = {
-  size: '400x?',
+  size: '480x?',
   bitrate: 1024,
   fps: 30,
-  duration: 4,
+  duration: 3,
   aspect: '4:3'
 };
 
@@ -32,7 +32,7 @@ function transcode(id, inputStream, ext, meta, cb) {
     .toFormat(ext);
 
   if (ext === 'gif') {
-    cmd = cmd.addOptions('-pix_fmt rgb24');
+    cmd = cmd.addOptions('-pix_fmt rgba');
   }
   cmd.pipe(outStream);
   cmd.on('error', function(err, stdout, stderr){

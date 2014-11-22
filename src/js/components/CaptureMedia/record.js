@@ -4,8 +4,9 @@ var raf = require('raf');
 var vid = document.createElement('video');
 var can = document.createElement('canvas');
 
+var fps = 30;
 module.exports = function(el, time, cb) {
-  var encoder = new whammy.Video(30, 0.5);
+  var encoder = new whammy.Video(fps, 1);
   //delete encoder.duration; // hack
 
   var aspectRatio = el.videoHeight / el.videoWidth;
@@ -23,13 +24,12 @@ module.exports = function(el, time, cb) {
 
   var grab = function(){
     var since = Date.now()-start;
-    var sinceLast = last - Date.now();
 
     if (since >= time) {
       return done();
     }
 
-    raf(grab);
+    setTimeout(grab, fps);
     ctx.drawImage(vid, 0, 0, w, h);
     encoder.add(ctx);
   };
