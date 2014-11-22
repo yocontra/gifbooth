@@ -1,4 +1,4 @@
-var supported = ['webm', 'ogg'];
+var supported = ['webm', 'h264'];
 var canPlayAny;
 try {
   var testVideo = document.createElement('video');
