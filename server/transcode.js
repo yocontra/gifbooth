@@ -31,9 +31,6 @@ function transcode(id, inputStream, ext, meta, cb) {
     .autopad('white')
     .toFormat(ext);
 
-  if (ext === 'gif') {
-    cmd = cmd.addOptions('-pix_fmt rgba');
-  }
   cmd.pipe(outStream);
   cmd.on('error', function(err, stdout, stderr){
     console.log(ext, err, stdout, stderr);
