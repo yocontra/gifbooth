@@ -23,6 +23,7 @@ module.exports = function(el, time, cb) {
 
   var grab = function(){
     var since = Date.now()-start;
+    var sinceLast = last - Date.now();
 
     if (since >= time) {
       return done();

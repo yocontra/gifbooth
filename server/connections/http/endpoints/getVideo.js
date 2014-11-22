@@ -27,7 +27,7 @@ function getVideo(req, res, next){
       return res.status(404).end();
     }
     if (files[0].length <= 0) {
-      return res.send(404).end();
+      return res.status(404).end();
     }
 
     var total = files[0].length;

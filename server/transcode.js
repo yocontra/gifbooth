@@ -6,7 +6,8 @@ var cfg = {
   size: '400x?',
   bitrate: 1024,
   fps: 30,
-  duration: 3
+  duration: 4,
+  aspect: '4:3'
 };
 
 function transcode(id, inputStream, ext, meta, cb) {
@@ -26,6 +27,8 @@ function transcode(id, inputStream, ext, meta, cb) {
     .fps(cfg.fps)
     .size(cfg.size)
     .duration(cfg.duration)
+    .aspectRatio(cfg.aspect)
+    .autopad('white')
     .toFormat(ext);
 
   cmd.pipe(outStream);
