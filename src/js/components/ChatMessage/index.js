@@ -10,8 +10,6 @@ try {
   canPlayAny = false;
 }
 
-canPlayAny = false;
-
 var ChatMessage = React.createClass({
   displayName: 'ChatMessage',
   propTypes: {
