@@ -1,4 +1,5 @@
-var CaptureMedia = require('../CaptureMedia');
+var React = require('react/addons');
+var CaptureMedia = React.createFactory(require('../CaptureMedia'));
 
 var BottomBar = React.createClass({
   mixins: [React.addons.LinkedStateMixin],

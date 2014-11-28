@@ -1,6 +1,7 @@
-var BottomBar = require('../BottomBar');
-var ChatMessage = require('../ChatMessage');
+var React = require('react');
 var request = require('superagent');
+var BottomBar = React.createFactory(require('../BottomBar'));
+var ChatMessage = React.createFactory(require('../ChatMessage'));
 
 var Application = React.createClass({
   displayName: 'Application',

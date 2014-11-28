@@ -1,3 +1,4 @@
+var React = require('react');
 var gum = require('getusermedia');
 var record = require('./record');
 

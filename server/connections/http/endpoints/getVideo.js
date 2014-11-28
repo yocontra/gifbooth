@@ -19,7 +19,9 @@ function getVideo(req, res, next){
   mongo.grid.files.find({
     filename: req.params.id,
     contentType: contentType
-  }).limit(1).toArray(function (err, files) {
+  })
+  .limit(1)
+  .toArray(function (err, files) {
     if (err) {
       return res.status(500).json(err).end();
     }
