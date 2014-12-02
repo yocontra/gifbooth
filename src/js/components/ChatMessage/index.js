@@ -1,17 +1,12 @@
 var React = require('react');
 var events = require('add-event-listener');
+var canPlayAny = require('../../lib/canPlayAny');
 
+// video extensions we support grabbing
 var supported = ['webm', 'h264'];
-var canPlayAny;
-try {
-  var testVideo = document.createElement('video');
-  canPlayAny = supported.some(function(type){
-    return testVideo.canPlayType('video/'+type);
-  });
-} catch (err) {
-  console.log(err);
-  canPlayAny = false;
-}
+
+// detect if we should play gifs
+var shouldUseGif = !canPlayAny(supported);
 
 var ChatMessage = React.createClass({
   displayName: 'ChatMessage',
@@ -21,31 +16,7 @@ var ChatMessage = React.createClass({
     text: React.PropTypes.string
   },
 
-  getInitialState: function() {
-    return {
-      videoError: null
-    };
-  },
-
-  setLoadError: function(e) {
-    console.log(e);
-    this.setState({
-      videoError: e
-    });
-  },
-  componentDidMount: function() {
-    var el = this.refs.video.getDOMNode();
-    events.addEventListener(el, 'error', this.setLoadError);
-  },
-  componentWillUnmount: function() {
-    var el = this.refs.video.getDOMNode();
-    events.removeEventListener(el, 'error', this.setLoadError);
-  },
   render: function() {
-    if (this.state.videoError) {
-      return null;
-    }
-
     var gif = React.DOM.img({
       ref: 'video-gif-source',
       key: 'video-gif-source-'+this.props.id,
@@ -77,7 +48,7 @@ var ChatMessage = React.createClass({
       className: 'chat-message-text'
     }, this.props.text) : null;
 
-    var media = canPlayAny ? vid : gif;
+    var media = shouldUseGif ? gif : vid;
 
     return React.DOM.div({
       ref: 'container-'+this.props.id,

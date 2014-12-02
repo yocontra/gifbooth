@@ -10,7 +10,7 @@ var cfg = {
   aspect: '4:3'
 };
 
-function transcode(id, inputStream, ext, meta, cb) {
+function transcode(id, input, ext, meta, cb) {
   var contentType = mime.lookup(ext);
   var outStream = mongo.grid.createWriteStream({
     filename: id,
@@ -21,7 +21,7 @@ function transcode(id, inputStream, ext, meta, cb) {
   outStream.once('close', success);
   outStream.once('error', fail);
 
-  var cmd = ffmpeg(inputStream)
+  var cmd = ffmpeg(input)
     .videoBitrate(cfg.bitrate)
     .noAudio()
     .fps(cfg.fps)

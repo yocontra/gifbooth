@@ -31,8 +31,7 @@ function createMessage(req, res, next){
   });
 
   function transcodeIt(format, cb){
-    var srcStream = fs.createReadStream(vid.path);
-    transcode(vid.name, srcStream, format, meta, cb);
+    transcode(vid.name, vid.path, format, meta, cb);
   }
 };
 
