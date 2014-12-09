@@ -1,12 +1,12 @@
 var whammy = require('whammy');
 var raf = require('raf');
+var config = require('../../../../config/defaults');
 
 var vid = document.createElement('video');
 var can = document.createElement('canvas');
 
-var fps = 30;
 module.exports = function(el, time, cb) {
-  var encoder = new whammy.Video(fps, 0.5);
+  var encoder = new whammy.Video(config.fps, 0.5);
   //delete encoder.duration; // hack
 
   var aspectRatio = el.videoHeight / el.videoWidth;
@@ -21,6 +21,7 @@ module.exports = function(el, time, cb) {
   var ctx = can.getContext('2d');
   var start = Date.now();
   var last = start;
+  var timeout = 1000/config.fps;
 
   var grab = function(){
     var since = Date.now()-start;
@@ -29,7 +30,7 @@ module.exports = function(el, time, cb) {
       return done();
     }
 
-    setTimeout(grab, fps);
+    setTimeout(grab, timeout);
     ctx.drawImage(vid, 0, 0, w, h);
     encoder.add(ctx);
   };

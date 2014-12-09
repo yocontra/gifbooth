@@ -48,8 +48,6 @@ var ChatMessage = React.createClass({
       className: 'chat-message-video'
     }, sources);
 
-    console.log(this.props);
-
     var msg = React.DOM.div({
       ref: 'text',
       key: 'text-'+this.props.id,

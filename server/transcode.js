@@ -1,12 +1,14 @@
 var ffmpeg = require('fluent-ffmpeg');
 var mime = require('mime');
 var mongo = require('./connections/mongo');
+var config = require('../config');
+
 
 var cfg = {
   size: '480x?',
-  bitrate: 1024,
-  fps: 30,
-  duration: 3,
+  bitrate: config.bitrate,
+  fps: config.fps,
+  duration: config.duration/1000,
   aspect: '4:3'
 };
 
