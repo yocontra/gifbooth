@@ -16,6 +16,12 @@ var ChatMessage = React.createClass({
     text: React.PropTypes.string
   },
 
+  getDefaultProps: function(){
+    return {
+      text: '-'
+    };
+  },
+
   render: function() {
     var gif = React.DOM.img({
       ref: 'video-gif-source',
@@ -42,11 +48,13 @@ var ChatMessage = React.createClass({
       className: 'chat-message-video'
     }, sources);
 
-    var msg = this.props.text ? React.DOM.div({
+    console.log(this.props);
+
+    var msg = React.DOM.div({
       ref: 'text',
       key: 'text-'+this.props.id,
       className: 'chat-message-text'
-    }, this.props.text) : null;
+    }, this.props.text || '-');
 
     var media = shouldUseGif ? gif : vid;
 

@@ -6,7 +6,7 @@ var can = document.createElement('canvas');
 
 var fps = 30;
 module.exports = function(el, time, cb) {
-  var encoder = new whammy.Video(fps, 0.8);
+  var encoder = new whammy.Video(fps, 0.5);
   //delete encoder.duration; // hack
 
   var aspectRatio = el.videoHeight / el.videoWidth;

@@ -1,5 +1,7 @@
 var React = require('react');
 var request = require('superagent');
+var config = require('../../../../config/defaults');
+
 var BottomBar = React.createFactory(require('../BottomBar'));
 var ChatMessage = React.createFactory(require('../ChatMessage'));
 
@@ -35,6 +37,9 @@ var Application = React.createClass({
       text: msg.text,
       url: '/video/'+msg.video
     });
+    if (msgs.length > config.backLog) {
+      msgs.pop();
+    }
     this.setState({messages: msgs});
   },
 

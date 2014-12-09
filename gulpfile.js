@@ -10,6 +10,7 @@ var nib = require('nib');
 var jeet = require('jeet');
 var autoprefixer = require('autoprefixer-stylus');
 var browserify = require('browserify');
+var watchify = require('watchify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
@@ -24,20 +25,14 @@ var globs = {
 
 rimraf.sync('./dist');
 var server = require('./server');
-
-var bundleCache = {};
-var pkgCache = {};
-var bundler = browserify('./src/js/index.js', {
-  cache: bundleCache,
-  packageCache: pkgCache,
-  fullPaths: true,
-  debug: true
-});
+var bundler = watchify(browserify('./src/js/index.js', watchify.args));
 
 gulp.task('watch', function(){
   gulp.watch(globs.css, ['css']);
-  gulp.watch(globs.js, ['js']);
   gulp.watch(globs.static, ['static']);
+  bundler.on('update', function(){
+    gulp.start('js'); 
+  });
 });
 
 gulp.task('static', function(){
