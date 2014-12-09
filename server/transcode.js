@@ -35,6 +35,8 @@ function transcode(id, input, ext, meta, cb) {
   cmd.on('error', function(err, stdout, stderr){
     console.log(ext, err, stdout, stderr);
   });
+
+  // TODO: clean up event listeners
   function success(file) {
     cb(null, file);
   }
