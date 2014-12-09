@@ -3,12 +3,11 @@ var mime = require('mime');
 var mongo = require('./connections/mongo');
 var config = require('../config');
 
-
 var cfg = {
   size: '480x?',
-  bitrate: config.bitrate,
-  fps: config.fps,
-  duration: config.duration/1000,
+  bitrate: config.get('bitrate'),
+  fps: config.get('fps'),
+  duration: config.get('duration')/1000,
   aspect: '4:3'
 };
 
