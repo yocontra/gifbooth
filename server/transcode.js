@@ -32,6 +32,12 @@ function transcode(id, input, ext, meta, cb) {
     .autopad('white')
     .toFormat(ext);
 
+  if (ext === 'h264') {
+    cmd = cmd.outputOptions([
+      '-profile:v baseline',
+      '-level 3.0'
+    ]);
+  }
   cmd.pipe(outStream);
   cmd.on('error', function(err, stdout, stderr){
     console.log(ext, err, stdout, stderr);
