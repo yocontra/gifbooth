@@ -19,7 +19,7 @@ var ChatMessage = React.createClass({
 
   getDefaultProps: function(){
     return {
-      text: '-'
+      text: ''
     };
   },
 
