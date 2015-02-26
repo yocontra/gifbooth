@@ -31,8 +31,9 @@ gulp.task('watch', function(){
   gulp.watch(globs.css, ['css']);
   gulp.watch(globs.static, ['static']);
   bundler.on('update', function(){
-    gulp.start('js'); 
+    gulp.start('js');
   });
+  lr.listen();
 });
 
 gulp.task('static', function(){

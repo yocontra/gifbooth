@@ -1,9 +1,10 @@
 var React = require('react');
 var events = require('add-event-listener');
+var config = require('../../../../config/defaults');
 var canPlayAny = require('../../lib/canPlayAny');
 
 // video extensions we support grabbing
-var supported = ['webm', 'h264'];
+var supported = config.types;
 
 // detect if we should play gifs
 var shouldUseGif = !canPlayAny(supported);

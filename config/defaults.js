@@ -1,4 +1,4 @@
-{
+module.exports = {
   "port": 9090,
   "banned": [],
   "backLog": 8,
@@ -7,9 +7,9 @@
   "sizeLimit": 1000000,
   "fps": 23,
   "types": [
-    "gif",
-    "webm",
-    "h264"
+    "gif"
+    //"webm",
+    //"h264"
   ],
   "mongo": "mongodb://localhost/booth-dev-local-2"
-}
+};
