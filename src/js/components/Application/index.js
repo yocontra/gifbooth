@@ -64,7 +64,7 @@ var Application = React.createClass({
     var title = React.DOM.p({
       key: 'title',
       className: 'title-text'
-    }, 'Booth');
+    }, 'Record a Move');
 
     var msgs = React.DOM.div({
       className: 'message-wall',
