@@ -15,7 +15,7 @@ function getVideo(req, res, next){
   }
 
   var contentType = mime.lookup(req.params.ext);
-  
+
   mongo.grid.files.find({
     filename: req.params.id,
     contentType: contentType
