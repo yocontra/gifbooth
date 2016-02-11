@@ -61,10 +61,12 @@ var Application = React.createClass({
       onSubmit: this.sendMessage
     });
 
+    /*
     var title = React.DOM.p({
       key: 'title',
       className: 'title-text'
-    }, 'Record a Move');
+    }, 'holla');
+    */
 
     var msgs = React.DOM.div({
       className: 'message-wall',
@@ -74,7 +76,7 @@ var Application = React.createClass({
 
     var container = React.DOM.div({
       className: 'application'
-    }, [title, msgs, bar]);
+    }, [msgs, bar]);
 
     return container;
   }

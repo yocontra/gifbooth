@@ -18,14 +18,8 @@ html, body
 
 body
   better-font()
-  background: linear-gradient(
-    45deg,
-    black 0,
-    black 50%,
-    white 50%,
-    white
-  )
-  background-size: 20px 20px
+  background: linear-gradient(45deg, #7b4397 , #dc2430)
+  background-size: cover
   background-attachment: fixed
 
 // remove for perf
@@ -42,7 +36,6 @@ body
   .chat-message
     overflow: hidden
     margin-bottom: 10px
-    border: 6px dashed yellow
 
     @media (min-width: 768px)
       column(1/4, cycle: 4, gutter: .5)
@@ -62,17 +55,19 @@ body
       display: inline-block
       text-align: center
       background-color: #fff
-      padding: 5px
+      padding: 10px
       min-height: 26px
       width: 100%
       color: #000
 
 .title-text
+  display: block
   font-family: 'Mr Dafoe', cursive
   font-size: 6rem
   text-align: center
   color: magenta
-  text-shadow: 4px 4px 4px yellow
+  text-shadow: 4px 4px 4px alpha(yellow, 0.8)
+  margin-bottom: 50px
 
 .bottom-bar
   z-index: 10
@@ -83,9 +78,12 @@ body
   .bottom-bar-selfie
     max-height: 300px
     background-color: #000
-    border: 3px dashed red
+    object-fit: cover
 
-    @media (min-width: 768px)
+    @media (min-width: 1280px)
+      span(1/8)
+
+    @media (min-width: 768px) and (max-width: 1279px)
       span(1/4)
 
     @media (max-width: 768px)
@@ -101,8 +99,11 @@ body
     padding-left: 15px
     color: #333
     background-color: #fff
-  
-    @media (min-width: 768px)
+
+    @media (min-width: 1280px)
+      span(7/8)
+
+    @media (min-width: 768px) and (max-width: 1279px)
       span(3/4)
 
     @media (max-width: 768px)

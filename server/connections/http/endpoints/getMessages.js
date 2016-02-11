@@ -6,7 +6,7 @@ function getMessages(req, res, next){
     // only count files that have webm
     contentType: 'video/webm'
   })
-  .limit(config.backLog)
+  .limit(+config.backLog)
   .toArray(function(err, files) {
     if (err) {
       return res.status(500).json(err).end();
