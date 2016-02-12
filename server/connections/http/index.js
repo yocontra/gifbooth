@@ -1,4 +1,5 @@
 var http = require('http');
+var https = require('https');
 var sio = require('socket.io');
 
 var express = require('express');
@@ -16,8 +17,13 @@ var getMessages = require('./endpoints/getMessages');
 var config = require('../../../config');
 var mongo = require('../mongo');
 
+var httpsConfig = require('../../../config/https')
+
 var app = express();
-var server = http.Server(app);
+var server = process.env.NODE_ENV === 'production'
+  ? https.Server(httpsConfig, app)
+  : http.Server(app);
+
 var wss = sio(server);
 
 var rateLimit = rate.middleware({

@@ -3,10 +3,11 @@ var config = require('../../../../config');
 
 function getMessages(req, res, next){
   mongo.grid.files.find({
-    // only count files that have webm
-    contentType: 'video/webm'
+    // only count files that have gif
+    contentType: 'image/gif'
   })
   .limit(+config.backLog)
+  .sort({uploadDate: 1})
   .toArray(function(err, files) {
     if (err) {
       return res.status(500).json(err).end();

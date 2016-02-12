@@ -1,5 +1,5 @@
 module.exports = {
-  "port": 9090,
+  "port": process.env.NODE_ENV === 'production' ? 80 : 9090,
   "banned": [],
   "backLog": 8,
   "duration": 2000,
@@ -8,7 +8,7 @@ module.exports = {
   "fps": 23,
   "types": [
     "gif"
-    //"webm",
+    //"webm"
     //"h264"
   ],
   "mongo": "mongodb://localhost/booth-dev-local-2"
