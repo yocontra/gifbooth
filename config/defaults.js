@@ -1,5 +1,5 @@
 module.exports = {
-  "port": process.env.NODE_ENV === 'production' ? 80 : 9090,
+  "port": 9090,
   "banned": [],
   "backLog": 8,
   "duration": 2000,
